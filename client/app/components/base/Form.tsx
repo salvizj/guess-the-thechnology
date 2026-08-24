@@ -27,7 +27,9 @@ const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
               placeholder={field.placeholder ?? ""}
               options={field.options ?? []}
               value={field.value}
-              onChange={(e) => field.onChange(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                field.onChange(e.target.value)
+              }
               error={field.error}
             />
           )
@@ -39,7 +41,9 @@ const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
               label={field.label}
               type={field.type}
               placeholder={field.placeholder ?? ""}
-              onChange={(e) => field.onChange(e.target.files?.[0] ?? null)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                field.onChange(e.target.files?.[0] ?? null)
+              }
               error={field.error}
             />
           )

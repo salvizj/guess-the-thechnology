@@ -1,3 +1,4 @@
+import { useState } from "react"
 import Form from "../../../components/base/Form"
 import Modal from "../../../components/base/Modal"
 import type { FieldConfig } from "../../../types/types"
@@ -8,22 +9,30 @@ type LoginFormProps = {
 }
 
 const LoginForm = ({ onSubmit, submitLabel = "Login" }: LoginFormProps) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
   const loginFields: FieldConfig[] = [
     {
       name: "email",
       label: "Email",
       type: "email",
       placeholder: "Enter your email",
-      value: "",
-      onChange: () => {},
+      value: formData.email,
+      onChange: (value) => {
+        setFormData({ ...formData, email: value })
+      },
     },
     {
       name: "password",
       label: "Password",
       type: "password",
       placeholder: "Enter your password",
-      value: "",
-      onChange: () => {},
+      value: formData.password,
+      onChange: (value) => {
+        setFormData({ ...formData, password: value })
+      },
     },
   ]
   return (
