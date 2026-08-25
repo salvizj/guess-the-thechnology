@@ -1,18 +1,50 @@
 import { useState } from "react"
 import Form from "../../../components/base/Form"
-import Modal from "../../../components/base/Modal"
 import type { FieldConfig } from "../../../types/types"
+import type z from "zod"
+import { loginSchema, type LoginSchema } from "../../../schemas/loginSchema"
 
 type LoginFormProps = {
-  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
+  onSubmit: (formData: LoginSchema) => void
   submitLabel?: string
+  isLoading?: boolean
+  error?: string | null
 }
 
-const LoginForm = ({ onSubmit, submitLabel = "Login" }: LoginFormProps) => {
+const LoginForm = ({
+  onSubmit,
+  submitLabel = "Login",
+  isLoading,
+  error,
+}: LoginFormProps) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   })
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string
+  }>({})
+
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setValidationErrors({})
+
+    const result = loginSchema.safeParse(formData)
+
+    if (!result.success) {
+      const fieldErrors = Object.fromEntries(
+        result.error.issues.map((issue: z.core.$ZodIssue) => [
+          String(issue.path[0]),
+          issue.message,
+        ]),
+      )
+      setValidationErrors(fieldErrors)
+      return
+    }
+
+    setValidationErrors({})
+    onSubmit(result.data)
+  }
   const loginFields: FieldConfig[] = [
     {
       name: "email",
@@ -23,6 +55,7 @@ const LoginForm = ({ onSubmit, submitLabel = "Login" }: LoginFormProps) => {
       onChange: (value) => {
         setFormData({ ...formData, email: value })
       },
+      error: validationErrors.email,
     },
     {
       name: "password",
@@ -33,6 +66,7 @@ const LoginForm = ({ onSubmit, submitLabel = "Login" }: LoginFormProps) => {
       onChange: (value) => {
         setFormData({ ...formData, password: value })
       },
+      error: validationErrors.password,
     },
   ]
   return (
@@ -40,8 +74,10 @@ const LoginForm = ({ onSubmit, submitLabel = "Login" }: LoginFormProps) => {
       <h2>Login</h2>
       <Form
         fields={loginFields}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         submitLabel={submitLabel}
+        isLoading={isLoading}
+        error={error}
       />
     </div>
   )

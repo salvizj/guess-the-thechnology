@@ -15,7 +15,7 @@ const MainLayout = ({ children, initialTheme }: LayoutProps) => {
   const { themeToggle } = useTheme(initialTheme)
   return (
     <div className="flex min-h-screen flex-col bg-surface text-content">
-      <Navbar user={user} onLogout={handleLogout} themeToggle={themeToggle} />
+      <Navbar themeToggle={themeToggle} />
 
       <main className="flex-1 flex min-h-screen">{children}</main>
 

@@ -7,9 +7,17 @@ type FormProps = {
   fields: FieldConfig[]
   onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
   submitLabel?: string
+  isLoading?: boolean
+  error?: string | null
 }
 
-const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
+const Form = ({
+  fields,
+  onSubmit,
+  submitLabel = "Submit",
+  isLoading,
+  error,
+}: FormProps) => {
   return (
     <form
       className="flex flex-col gap-4"
@@ -61,6 +69,8 @@ const Form = ({ fields, onSubmit, submitLabel = "Submit" }: FormProps) => {
           )
       })}
       <Button type="submit">{submitLabel}</Button>
+      {isLoading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   )
 }

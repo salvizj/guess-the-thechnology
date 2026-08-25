@@ -1,14 +1,14 @@
 import { Link } from "react-router"
 import { ThemeToggler } from "./ThemeToggler"
-import type { Theme } from "../types/types"
+import { useAuthContext } from "../context/useAuthContext"
+import Button from "./base/Button"
 
 type NavbarProps = {
-  user: { email: string } | undefined
-  onLogout: () => void
   themeToggle: () => void
 }
 
-export default function Navbar({ user, onLogout, themeToggle }: NavbarProps) {
+export default function Navbar({ themeToggle }: NavbarProps) {
+  const { isAuthenticated, logout } = useAuthContext()
   return (
     <header className="border-b border-border bg-surface-elevated px-4">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between">
@@ -20,38 +20,25 @@ export default function Navbar({ user, onLogout, themeToggle }: NavbarProps) {
         </Link>
 
         <nav className="flex items-center gap-6">
-          <Link
-            to="/"
-            className="text-sm font-medium text-content-secondary transition-colors hover:text-content"
-          >
-            Home
+          <Link to="/">
+            <Button variant="ghost">Home</Button>
           </Link>
 
-          {user ? (
-            <div className="flex items-center gap-4 pl-2">
-              <span className="text-sm text-content-muted">{user.email}</span>
-              <button
-                onClick={onLogout}
-                className="rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-medium text-content transition-all hover:bg-surface-secondary"
-              >
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <Button onClick={logout} variant="outline">
                 Logout
-              </button>
+              </Button>
+              <ThemeToggler themeToggle={themeToggle} />
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <Link
-                to="/login"
-                className="text-sm font-medium text-content-secondary transition-colors hover:text-content"
-              >
-                Login
+              <Link to="/login">
+                <Button variant="outline">Login</Button>
               </Link>
-              <Link
-                to="/register"
-                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary-light active:scale-95"
-              >
-                Register
+              <Link to="/register">
+                <Button variant="primary">Register</Button>
               </Link>
-
               <ThemeToggler themeToggle={themeToggle} />
             </div>
           )}

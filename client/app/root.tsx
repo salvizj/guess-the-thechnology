@@ -12,6 +12,7 @@ import type { Route } from "./+types/root"
 import "./app.css"
 import { getTheme } from "./utils/theme"
 import MainLayout from "./layout/MainLayout"
+import { AuthProvider } from "./context/useAuthContext"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -53,9 +54,11 @@ export default function App() {
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
-      <MainLayout initialTheme={theme}>
-        <Outlet />
-      </MainLayout>
+      <AuthProvider>
+        <MainLayout initialTheme={theme}>
+          <Outlet />
+        </MainLayout>
+      </AuthProvider>
     </div>
   )
 }

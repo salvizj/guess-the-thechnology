@@ -1,6 +1,7 @@
-import { useState } from "react"
 import LoginForm from "../../features/auth/components/LoginForm"
 import type { Route } from "./+types/login"
+import type { LoginSchema } from "../../schemas/loginSchema"
+import { useAuthContext } from "../../context/useAuthContext"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,18 +11,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Login() {
-  const [isOpen, setIsOpen] = useState(true)
-  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const { login, isLoading, error } = useAuthContext()
+  const onSubmit = (formData: LoginSchema) => {
+    login(formData)
   }
 
   return (
     <>
-      <LoginForm
-        onSubmit={onSubmit}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      />
+      <LoginForm onSubmit={onSubmit} isLoading={isLoading} error={error} />
     </>
   )
 }

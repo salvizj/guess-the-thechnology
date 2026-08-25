@@ -1,23 +1,56 @@
 import { useState } from "react"
 import Form from "../../../components/base/Form"
 import type { FieldConfig } from "../../../types/types"
+import type z from "zod"
+import {
+  registerSchema,
+  type RegisterSchema,
+} from "../../../schemas/registerSchema"
 
 type RegisterFormProps = {
-  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
+  onSubmit: (formData: RegisterSchema) => void
   submitLabel?: string
-  isOpen: boolean
-  onClose: () => void
+  isLoading?: boolean
+  error?: string | null
 }
 
 const RegisterForm = ({
   onSubmit,
   submitLabel = "Register",
+  isLoading,
+  error,
 }: RegisterFormProps) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   })
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string
+  }>({})
+
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setValidationErrors({})
+
+    const result = registerSchema.safeParse(formData)
+
+    if (!result.success) {
+      const fieldErrors = Object.fromEntries(
+        result.error.issues.map((issue: z.core.$ZodIssue) => [
+          String(issue.path[0]),
+          issue.message,
+        ]),
+      )
+      setValidationErrors(fieldErrors)
+      return
+    }
+
+    setValidationErrors({})
+    onSubmit(result.data)
+  }
+
   const registerFields: FieldConfig[] = [
     {
       name: "username",
@@ -28,6 +61,7 @@ const RegisterForm = ({
       onChange: (value) => {
         setFormData({ ...formData, username: value })
       },
+      error: validationErrors.username,
     },
     {
       name: "email",
@@ -38,6 +72,7 @@ const RegisterForm = ({
       onChange: (value) => {
         setFormData({ ...formData, email: value })
       },
+      error: validationErrors.email,
     },
     {
       name: "password",
@@ -48,6 +83,18 @@ const RegisterForm = ({
       onChange: (value) => {
         setFormData({ ...formData, password: value })
       },
+      error: validationErrors.password,
+    },
+    {
+      name: "confirmPassword",
+      label: "Confirm Password",
+      type: "password",
+      placeholder: "Confirm your password",
+      value: formData.confirmPassword,
+      onChange: (value) => {
+        setFormData({ ...formData, confirmPassword: value })
+      },
+      error: validationErrors.confirmPassword,
     },
   ]
   return (
@@ -55,8 +102,10 @@ const RegisterForm = ({
       <h2>Register</h2>
       <Form
         fields={registerFields}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         submitLabel={submitLabel}
+        isLoading={isLoading}
+        error={error}
       />
     </div>
   )

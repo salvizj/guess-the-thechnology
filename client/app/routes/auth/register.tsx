@@ -1,6 +1,7 @@
-import { useState } from "react"
 import RegisterForm from "../../features/auth/components/RegisterForm"
 import type { Route } from "./+types/register"
+import type { RegisterSchema } from "../../schemas/registerSchema"
+import { useAuthContext } from "../../context/useAuthContext"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,17 +11,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Register() {
-  const [isOpen, setIsOpen] = useState(true)
-  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const { register, isLoading, error } = useAuthContext()
+  const onSubmit = (formData: RegisterSchema) => {
+    register(formData)
   }
   return (
     <>
-      <RegisterForm
-        onSubmit={onSubmit}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      />
+      <RegisterForm onSubmit={onSubmit} isLoading={isLoading} error={error} />
     </>
   )
 }

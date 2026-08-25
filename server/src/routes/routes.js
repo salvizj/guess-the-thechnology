@@ -1,9 +1,16 @@
-const express = require("express")
+import express from "express"
+import userController from "../controllers/userController.js"
+import authController from "../controllers/authController.js"
+import { authenticateToken } from "../middleware/authMiddleware.js"
+
 const router = express.Router()
-const userController = require("../controllers/userController")
-const authController = require("../controllers/authController")
 
 router.get("/users/:id", userController.getUser)
-router.post("/login", authController.postLogin)
-router.post("/register", authController.postRegister)
-module.exports = router
+router.post("/auth/login", authController.postLogin)
+router.post("/auth/register", authController.postRegister)
+router.post("/auth/logout", authController.postLogout)
+
+router.get("/auth/verify", authenticateToken, (req, res) => {
+  res.status(200).json({ valid: true })
+})
+export default router

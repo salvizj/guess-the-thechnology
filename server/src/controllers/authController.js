@@ -1,34 +1,77 @@
+import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { dbGet, dbRun } from "../db/utils.js"
 
 export const postRegister = async (req, res) => {
-  const { email, password } = req.body
+  try {
+    const { username, email, password } = req.body
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" })
+    }
+    const existingUser = await dbGet(
+      "SELECT id FROM users WHERE email = ? OR username = ?",
+      [email, username],
+    )
+    if (existingUser) {
+      return res.status(409).json({ message: "User already exists" })
+    }
 
-  // 1. Validate input and check if user exists
-  // 2. Hash password and save user to database
-  const newUser = { id: "456", email } // Mock saved user
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-  // 3. Generate token
-  const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  })
+    const result = await dbRun(
+      "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
+      [username, email, hashedPassword],
+    )
+    const secret = process.env.JWT_SECRET || "fallback_development_secret"
+    const token = jwt.sign({ userId: result.lastID }, secret, {
+      expiresIn: "1h",
+    })
 
-  // 4. Return response (Cookie or Bearer token)
-  res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
-  return res.status(201).json({ message: "User registered successfully" })
+    res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: { id: result.lastID, username, email },
+    })
+  } catch (err) {
+    console.error("Registration Error:", err)
+    return res.status(500).json({ message: "Internal server error" })
+  }
 }
 
 export const postLogin = async (req, res) => {
-  const { email, password } = req.body
+  try {
+    const { email, password } = req.body
+    if (!email || !password) {
+      return res.status(400).json({ message: "All fields are required" })
+    }
+    const user = await dbGet("SELECT * FROM users WHERE email = ?", [email])
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" })
+    }
 
-  // 1. Find user and verify password hash
-  const user = { id: "456", email } // Mock verified user
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash)
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid credentials" })
+    }
+    const secret = process.env.JWT_SECRET || "fallback_development_secret"
+    const token = jwt.sign({ userId: user.id }, secret, {
+      expiresIn: "1h",
+    })
 
-  // 2. Generate token
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  })
-
-  // 3. Return response
-  res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
-  return res.status(200).json({ message: "Logged in successfully" })
+    res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
+    return res.status(200).json({
+      message: "Logged in successfully",
+      user: { id: user.id, username: user.username, email: user.email },
+    })
+  } catch (err) {
+    console.error("Login Error:", err)
+    return res.status(500).json({ message: "Internal server error" })
+  }
 }
+
+const postLogout = (req, res) => {
+  res.clearCookie("token")
+  return res.status(200).json({ message: "Logged out successfully" })
+}
+
+export default { postRegister, postLogin, postLogout }
