@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       setIsAuthenticated(false)
     }
-  
+  }
 
   useEffect(() => {
     if (PUBLIC_ROUTES.includes(window.location.pathname)) {
