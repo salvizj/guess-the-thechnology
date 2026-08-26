@@ -29,11 +29,11 @@ const LoginForm = ({
     e.preventDefault()
     setValidationErrors({})
 
-    const result = loginSchema.safeParse(formData)
+    const res = loginSchema.safeParse(formData)
 
-    if (!result.success) {
+    if (!res.success) {
       const fieldErrors = Object.fromEntries(
-        result.error.issues.map((issue: z.core.$ZodIssue) => [
+        res.error.issues.map((issue: z.core.$ZodIssue) => [
           String(issue.path[0]),
           issue.message,
         ]),
@@ -43,7 +43,7 @@ const LoginForm = ({
     }
 
     setValidationErrors({})
-    onSubmit(result.data)
+    onSubmit(res.data)
   }
   const loginFields: FieldConfig[] = [
     {

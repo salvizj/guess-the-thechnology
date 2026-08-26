@@ -34,11 +34,11 @@ const RegisterForm = ({
     e.preventDefault()
     setValidationErrors({})
 
-    const result = registerSchema.safeParse(formData)
+    const res = registerSchema.safeParse(formData)
 
-    if (!result.success) {
+    if (!res.success) {
       const fieldErrors = Object.fromEntries(
-        result.error.issues.map((issue: z.core.$ZodIssue) => [
+        res.error.issues.map((issue: z.core.$ZodIssue) => [
           String(issue.path[0]),
           issue.message,
         ]),
@@ -48,7 +48,7 @@ const RegisterForm = ({
     }
 
     setValidationErrors({})
-    onSubmit(result.data)
+    onSubmit(res.data)
   }
 
   const registerFields: FieldConfig[] = [

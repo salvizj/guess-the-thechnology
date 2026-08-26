@@ -8,7 +8,7 @@ type NavbarProps = {
 }
 
 export default function Navbar({ themeToggle }: NavbarProps) {
-  const { isAuthenticated, logout } = useAuthContext()
+  const { isAuthenticated, handleLogout } = useAuthContext()
   return (
     <header className="border-b border-border bg-surface-elevated px-4">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between">
@@ -26,7 +26,7 @@ export default function Navbar({ themeToggle }: NavbarProps) {
 
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
-              <Button onClick={logout} variant="outline">
+              <Button onClick={handleLogout} variant="outline">
                 Logout
               </Button>
               <ThemeToggler themeToggle={themeToggle} />

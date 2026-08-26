@@ -17,7 +17,7 @@ const clientBuildPath = path.resolve(__dirname, "../../client/build/client")
 
 app.use(express.static(clientBuildPath))
 
-app.get("/*splat", (req, res) => {
+app.get("{*splat}", (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"))
 })
 

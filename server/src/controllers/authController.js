@@ -18,19 +18,19 @@ export const postRegister = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const result = await dbRun(
+    const user = await dbRun(
       "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
       [username, email, hashedPassword],
     )
     const secret = process.env.JWT_SECRET || "fallback_development_secret"
-    const token = jwt.sign({ userId: result.lastID }, secret, {
+    const token = jwt.sign({ userId: user.lastID }, secret, {
       expiresIn: "1h",
     })
 
-    res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
+    res.cookie("JWT", token, { httpOnly: true, sameSite: "strict" })
     return res.status(201).json({
       message: "User registered successfully",
-      user: { id: result.lastID, username, email },
+      user: { id: user.lastID, username, email },
     })
   } catch (err) {
     console.error("Registration Error:", err)
@@ -58,7 +58,7 @@ export const postLogin = async (req, res) => {
       expiresIn: "1h",
     })
 
-    res.cookie("token", token, { httpOnly: true, sameSite: "strict" })
+    res.cookie("JWT", token, { httpOnly: true, sameSite: "strict" })
     return res.status(200).json({
       message: "Logged in successfully",
       user: { id: user.id, username: user.username, email: user.email },
@@ -70,7 +70,7 @@ export const postLogin = async (req, res) => {
 }
 
 const postLogout = (req, res) => {
-  res.clearCookie("token")
+  res.clearCookie("JWT", { httpOnly: true, sameSite: "strict" })
   return res.status(200).json({ message: "Logged out successfully" })
 }
 

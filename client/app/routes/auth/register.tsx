@@ -11,9 +11,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Register() {
-  const { register, isLoading, error } = useAuthContext()
+  const { handleRegister, isLoading, error } = useAuthContext()
   const onSubmit = (formData: RegisterSchema) => {
-    register(formData)
+    handleRegister(formData)
   }
   return (
     <>

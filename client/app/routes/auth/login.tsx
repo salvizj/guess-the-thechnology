@@ -11,9 +11,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Login() {
-  const { login, isLoading, error } = useAuthContext()
+  const { handleLogin, isLoading, error } = useAuthContext()
   const onSubmit = (formData: LoginSchema) => {
-    login(formData)
+    handleLogin(formData)
   }
 
   return (

@@ -1,9 +1,9 @@
 import { useState } from "react"
 import {
-  loginUser,
-  logoutUser,
-  registerUser,
-  verifyUsersJWT,
+  fetchLogin,
+  fetchRegister,
+  fetchLogout,
+  fetchVerifyJWT,
 } from "../auth/api/auth"
 import type { RegisterSchema } from "../../schemas/registerSchema"
 import type { LoginSchema } from "../../schemas/loginSchema"
@@ -12,12 +12,12 @@ const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const login = async (data: LoginSchema) => {
+  const executeLogin = async (data: LoginSchema) => {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await loginUser(data)
-      return result
+      const res = await fetchLogin(data)
+      return res
     } catch (err) {
       const message = err instanceof Error ? err.message : "Login failed"
       setError(message)
@@ -27,12 +27,12 @@ const useAuth = () => {
     }
   }
 
-  const register = async (data: RegisterSchema) => {
+  const executeRegister = async (data: RegisterSchema) => {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await registerUser(data)
-      return result
+      const res = await fetchRegister(data)
+      return res
     } catch (err) {
       const message = err instanceof Error ? err.message : "Registration failed"
       setError(message)
@@ -42,12 +42,12 @@ const useAuth = () => {
     }
   }
 
-  const logout = async () => {
+  const executeLogout = async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await logoutUser()
-      return result
+      const res = await fetchLogout()
+      return res
     } catch (err) {
       const message = err instanceof Error ? err.message : "Logout failed"
       setError(message)
@@ -57,12 +57,12 @@ const useAuth = () => {
     }
   }
 
-  const verifyJWT = async () => {
+  const executeVerifyJWT = async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await verifyUsersJWT()
-      return result
+      const res = await fetchVerifyJWT()
+      return res
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "JWT verification failed"
@@ -74,12 +74,12 @@ const useAuth = () => {
   }
 
   return {
-    login,
-    register,
     isLoading,
     error,
-    logout,
-    verifyJWT,
+    executeLogin,
+    executeRegister,
+    executeLogout,
+    executeVerifyJWT,
   }
 }
 export default useAuth

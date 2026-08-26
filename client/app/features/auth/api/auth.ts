@@ -3,7 +3,7 @@ import type { RegisterSchema } from "../../../schemas/registerSchema"
 
 const BASE_PATH = "/api/auth"
 
-const registerUser = async (data: RegisterSchema) => {
+const fetchRegister = async (data: RegisterSchema) => {
   const res = await fetch(`${BASE_PATH}/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -19,7 +19,7 @@ const registerUser = async (data: RegisterSchema) => {
   return res.json()
 }
 
-const loginUser = async (data: LoginSchema) => {
+const fetchLogin = async (data: LoginSchema) => {
   const res = await fetch(`${BASE_PATH}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -34,7 +34,7 @@ const loginUser = async (data: LoginSchema) => {
 
   return res.json()
 }
-const logoutUser = async () => {
+const fetchLogout = async () => {
   const res = await fetch(`${BASE_PATH}/logout`, {
     method: "POST",
     credentials: "include",
@@ -48,9 +48,8 @@ const logoutUser = async () => {
   return res.json()
 }
 
-const verifyUsersJWT = async () => {
+const fetchVerifyJWT = async () => {
   const res = await fetch(`${BASE_PATH}/verify`, { credentials: "include" })
-
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}))
     throw new Error(errorData.message || "JWT verification failed")
@@ -59,4 +58,4 @@ const verifyUsersJWT = async () => {
   return res.json()
 }
 
-export { registerUser, loginUser, logoutUser, verifyUsersJWT }
+export { fetchRegister, fetchLogin, fetchLogout, fetchVerifyJWT }

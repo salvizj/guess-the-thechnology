@@ -8,60 +8,65 @@ import {
 import useAuth from "../features/hooks/useAuth"
 import type { RegisterSchema } from "../schemas/registerSchema"
 import type { LoginSchema } from "../schemas/loginSchema"
-import { loginUser } from "../features/auth/api/auth"
+import { useNavigate } from "react-router"
 
 type AuthContextType = {
   isAuthenticated: boolean
   setIsAuthenticated: (isAuthenticated: boolean) => void
-  logout: () => Promise<void>
-  register: (data: RegisterSchema) => Promise<void>
-  login: (data: LoginSchema) => Promise<void>
-  verifyJWT: () => Promise<void>
+  handleLogin: (data: LoginSchema) => Promise<void>
+  handleRegister: (data: RegisterSchema) => Promise<void>
+  handleLogout: () => Promise<void>
+  handleVerifyJWT: () => Promise<void>
   isLoading: boolean
   error: string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
-
+const PUBLIC_ROUTES = ["/login", "/register", "/"]
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const {
-    login: apiLogin,
-    register,
-    logout: apiLogout,
-    verifyJWT,
-    isLoading,
     error,
+    isLoading,
+    executeLogin,
+    executeRegister,
+    executeLogout,
+    executeVerifyJWT,
   } = useAuth()
 
-  const checkAuth = async () => {
+  const handleVerifyJWT = async () => {
     try {
-      const res = await verifyJWT()
+      const res = await executeVerifyJWT()
       setIsAuthenticated(Boolean(res && res.isValid))
     } catch {
       setIsAuthenticated(false)
     }
-  }
+  
 
   useEffect(() => {
-    checkAuth()
+    if (PUBLIC_ROUTES.includes(window.location.pathname)) {
+      return
+    }
+
+    handleVerifyJWT()
   }, [])
 
-  const login = async (data: LoginSchema) => {
+  const handleLogin = async (data: LoginSchema) => {
     try {
-      const result = await apiLogin(data)
-      localStorage.setItem("token", result.token)
-
+      await executeLogin(data)
       setIsAuthenticated(true)
+      navigate("/", { replace: true })
     } catch (err) {
       setIsAuthenticated(false)
       throw err
     }
   }
 
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      const result = await apiLogout()
+      await executeLogout()
+      navigate("/login", { replace: true })
       setIsAuthenticated(false)
     } catch (err) {
       throw err
@@ -75,10 +80,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         error,
         isAuthenticated,
         setIsAuthenticated,
-        logout,
-        register,
-        login,
-        verifyJWT,
+        handleLogout,
+        handleLogin,
+        handleRegister: executeRegister,
+        handleVerifyJWT,
       }}
     >
       {children}
