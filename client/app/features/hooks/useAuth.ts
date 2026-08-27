@@ -14,7 +14,6 @@ const useAuth = () => {
 
   const executeLogin = async (data: LoginSchema) => {
     setIsLoading(true)
-    setError(null)
     try {
       const res = await fetchLogin(data)
       return res
@@ -29,7 +28,6 @@ const useAuth = () => {
 
   const executeRegister = async (data: RegisterSchema) => {
     setIsLoading(true)
-    setError(null)
     try {
       const res = await fetchRegister(data)
       return res
@@ -44,7 +42,6 @@ const useAuth = () => {
 
   const executeLogout = async () => {
     setIsLoading(true)
-    setError(null)
     try {
       const res = await fetchLogout()
       return res
@@ -59,15 +56,11 @@ const useAuth = () => {
 
   const executeVerifyJWT = async () => {
     setIsLoading(true)
-    setError(null)
     try {
       const res = await fetchVerifyJWT()
       return res
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "JWT verification failed"
-      setError(message)
-      throw err
+      return { isValid: false, isAdmin: false }
     } finally {
       setIsLoading(false)
     }

@@ -8,7 +8,7 @@ type NavbarProps = {
 }
 
 export default function Navbar({ themeToggle }: NavbarProps) {
-  const { isAuthenticated, handleLogout } = useAuthContext()
+  const { isAuthenticated, handleLogout, isAdmin } = useAuthContext()
   return (
     <header className="border-b border-border bg-surface-elevated px-4">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between">
@@ -29,6 +29,11 @@ export default function Navbar({ themeToggle }: NavbarProps) {
               <Button onClick={handleLogout} variant="outline">
                 Logout
               </Button>
+              {isAdmin && (
+                <Link to="/admin">
+                  <Button variant="ghost">Admin</Button>
+                </Link>
+              )}
               <ThemeToggler themeToggle={themeToggle} />
             </div>
           ) : (

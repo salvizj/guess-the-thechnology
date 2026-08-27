@@ -5,7 +5,6 @@
 **/build/
 node_modules/
 **/node_modules/
-
 **.sqlite*.sqlite
 *.db
 **database.sqlite

@@ -12,6 +12,7 @@ router.get("/auth/verify", requireAuth, (req, res) => {
   return res.status(200).json({
     isValid: true,
     userId: req.userId,
+    isAdmin: req.isAdmin,
   })
 })
 export default router

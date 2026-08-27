@@ -17,15 +17,16 @@ type AuthContextType = {
   handleRegister: (data: RegisterSchema) => Promise<void>
   handleLogout: () => Promise<void>
   handleVerifyJWT: () => Promise<void>
+  isAdmin: boolean
   isLoading: boolean
   error: string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
-const PUBLIC_ROUTES = ["/login", "/register", "/"]
 export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [isAdmin, setIsAdmin] = useState<boolean>(false)
   const {
     error,
     isLoading,
@@ -34,28 +35,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     executeLogout,
     executeVerifyJWT,
   } = useAuth()
-
+  console.log(
+    "AuthProvider: isAuthenticated =",
+    isAuthenticated,
+    "isAdmin =",
+    isAdmin,
+  )
   const handleVerifyJWT = async () => {
     try {
       const res = await executeVerifyJWT()
       setIsAuthenticated(Boolean(res && res.isValid))
+      setIsAdmin(Boolean(res && (res.isAdmin === 1 || res.isAdmin === true)))
     } catch {
       setIsAuthenticated(false)
     }
   }
 
   useEffect(() => {
-    if (PUBLIC_ROUTES.includes(window.location.pathname)) {
-      return
-    }
-
     handleVerifyJWT()
   }, [])
 
   const handleLogin = async (data: LoginSchema) => {
     try {
-      await executeLogin(data)
+      const res = await executeLogin(data)
+      console.log("Login response:", res)
       setIsAuthenticated(true)
+      setIsAdmin(Boolean(res && (res.isAdmin === 1 || res.isAdmin === true)))
       navigate("/", { replace: true })
     } catch (err) {
       setIsAuthenticated(false)
@@ -73,6 +78,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const handleRegister = async (data: RegisterSchema) => {
+    try {
+      await executeRegister(data)
+      navigate("/login")
+    } catch (err) {
+      throw err
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -82,8 +96,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAuthenticated,
         handleLogout,
         handleLogin,
-        handleRegister: executeRegister,
+        handleRegister,
         handleVerifyJWT,
+        isAdmin,
       }}
     >
       {children}

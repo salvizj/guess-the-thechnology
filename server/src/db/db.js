@@ -24,8 +24,9 @@ db.serialize(() => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL UNIQUE,
       email TEXT NOT NULL UNIQUE,
-      password_hash TEXT NOT NULL
-    )
+      password_hash TEXT NOT NULL,
+      is_admin BOOLEAN DEFAULT 0
+    );
   `)
 
   db.run(`
@@ -34,9 +35,8 @@ db.serialize(() => {
       title TEXT NOT NULL,
       image_url TEXT,
       difficulty TEXT CHECK(difficulty IN ('easy', 'medium', 'hard')),
-      category TEXT NOT NULL,
-      correct_answer TEXT NOT NULL
-    )
+      category TEXT NOT NULL
+    );
   `)
 
   db.run(`
@@ -44,8 +44,9 @@ db.serialize(() => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       question_id INTEGER NOT NULL,
       option_text TEXT NOT NULL,
+      correct BOOLEAN NOT NULL,
       FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
-    )
+    );
   `)
 
   db.run(`
@@ -55,7 +56,7 @@ db.serialize(() => {
       score INTEGER NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    )
+    );
   `)
 })
 

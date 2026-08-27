@@ -54,14 +54,23 @@ export const postLogin = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" })
     }
     const secret = process.env.JWT_SECRET || "fallback_development_secret"
-    const token = jwt.sign({ userId: user.id }, secret, {
-      expiresIn: "1h",
-    })
+    const token = jwt.sign(
+      { userId: user.id, isAdmin: user.is_admin },
+      secret,
+      {
+        expiresIn: "1h",
+      },
+    )
 
     res.cookie("JWT", token, { httpOnly: true, sameSite: "strict" })
     return res.status(200).json({
       message: "Logged in successfully",
-      user: { id: user.id, username: user.username, email: user.email },
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        isAdmin: user.is_admin,
+      },
     })
   } catch (err) {
     console.error("Login Error:", err)

@@ -16,14 +16,30 @@ const requireAuth = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, secret)
 
-    if (typeof decoded !== "object" || !decoded || !("userId" in decoded)) {
+    if (
+      typeof decoded !== "object" ||
+      !decoded ||
+      !("userId" in decoded) ||
+      !("isAdmin" in decoded)
+    ) {
       return res.status(403).json({ message: "Invalid token structure" })
     }
 
     req.userId = decoded.userId
+    req.isAdmin = decoded.isAdmin
     next()
   } catch (err) {
     return res.status(403).json({ message: "Invalid or expired token" })
   }
 }
-export { requireAuth }
+
+const isAdmin = (req, res, next) => {
+  if (!req.isAdmin) {
+    return res
+      .status(403)
+      .json({ message: "Access denied. Admin privileges required." })
+  }
+  next()
+}
+
+export { requireAuth, isAdmin }
