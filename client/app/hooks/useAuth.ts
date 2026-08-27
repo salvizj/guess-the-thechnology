@@ -4,9 +4,9 @@ import {
   fetchRegister,
   fetchLogout,
   fetchVerifyJWT,
-} from "../auth/api/auth"
-import type { RegisterSchema } from "../../schemas/registerSchema"
-import type { LoginSchema } from "../../schemas/loginSchema"
+} from "../features/auth/api/auth"
+import type { RegisterSchema } from "../schemas/registerSchema"
+import type { LoginSchema } from "../schemas/loginSchema"
 
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false)

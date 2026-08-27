@@ -5,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import useAuth from "../features/hooks/useAuth"
+import useAuth from "../hooks/useAuth"
 import type { RegisterSchema } from "../schemas/registerSchema"
 import type { LoginSchema } from "../schemas/loginSchema"
 import { useNavigate } from "react-router"
@@ -35,12 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     executeLogout,
     executeVerifyJWT,
   } = useAuth()
-  console.log(
-    "AuthProvider: isAuthenticated =",
-    isAuthenticated,
-    "isAdmin =",
-    isAdmin,
-  )
+
   const handleVerifyJWT = async () => {
     try {
       const res = await executeVerifyJWT()
@@ -58,9 +53,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleLogin = async (data: LoginSchema) => {
     try {
       const res = await executeLogin(data)
-      console.log("Login response:", res)
       setIsAuthenticated(true)
-      setIsAdmin(Boolean(res && (res.isAdmin === 1 || res.isAdmin === true)))
+      setIsAdmin(
+        Boolean(res?.user?.isAdmin === 1 || res?.user?.isAdmin === true),
+      )
       navigate("/", { replace: true })
     } catch (err) {
       setIsAuthenticated(false)

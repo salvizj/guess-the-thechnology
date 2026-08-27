@@ -20,12 +20,18 @@ type Pages = {
   "/register": {
     params: {};
   };
+  "/play": {
+    params: {};
+  };
+  "/admin": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/register";
+    page: "/" | "/login" | "/register" | "/play" | "/admin";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -39,6 +45,22 @@ type RouteFiles = {
     id: "routes/auth/register";
     page: "/register";
   };
+  "routes/layouts/AuthenticatedRoute.tsx": {
+    id: "routes/layouts/AuthenticatedRoute";
+    page: "/play" | "/admin";
+  };
+  "routes/quiz/play.tsx": {
+    id: "routes/quiz/play";
+    page: "/play";
+  };
+  "routes/layouts/AdminRoute.tsx": {
+    id: "routes/layouts/AdminRoute";
+    page: "/admin";
+  };
+  "routes/admin.tsx": {
+    id: "routes/admin";
+    page: "/admin";
+  };
 };
 
 type RouteModules = {
@@ -46,4 +68,8 @@ type RouteModules = {
   "routes/home": typeof import("./app/routes/home.tsx");
   "routes/auth/login": typeof import("./app/routes/auth/login.tsx");
   "routes/auth/register": typeof import("./app/routes/auth/register.tsx");
+  "routes/layouts/AuthenticatedRoute": typeof import("./app/routes/layouts/AuthenticatedRoute.tsx");
+  "routes/quiz/play": typeof import("./app/routes/quiz/play.tsx");
+  "routes/layouts/AdminRoute": typeof import("./app/routes/layouts/AdminRoute.tsx");
+  "routes/admin": typeof import("./app/routes/admin.tsx");
 };
