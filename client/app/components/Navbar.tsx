@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link, NavLink } from "react-router"
 import { ThemeToggler } from "./ThemeToggler"
 import { useAuthContext } from "../context/useAuthContext"
 import Button from "./base/Button"
@@ -20,30 +20,60 @@ export default function Navbar({ themeToggle }: NavbarProps) {
         </Link>
 
         <nav className="flex items-center gap-6">
-          <Link to="/">
-            <Button variant="ghost">Home</Button>
-          </Link>
+          <NavLink to="/" end>
+            {({ isActive }) => (
+              <Button variant="ghost" isActive={isActive}>
+                Home
+              </Button>
+            )}
+          </NavLink>
 
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
+              {isAdmin && (
+                <NavLink to="/admin" end>
+                  {({ isActive }) => (
+                    <Button variant="ghost" isActive={isActive}>
+                      Admin
+                    </Button>
+                  )}
+                </NavLink>
+              )}
+              <NavLink to="/profile" end>
+                {({ isActive }) => (
+                  <Button variant="ghost" isActive={isActive}>
+                    Profile
+                  </Button>
+                )}
+              </NavLink>
+              <NavLink to="/quizzes" end>
+                {({ isActive }) => (
+                  <Button variant="ghost" isActive={isActive}>
+                    Quizzes
+                  </Button>
+                )}
+              </NavLink>
               <Button onClick={handleLogout} variant="outline">
                 Logout
               </Button>
-              {isAdmin && (
-                <Link to="/admin">
-                  <Button variant="ghost">Admin</Button>
-                </Link>
-              )}
               <ThemeToggler themeToggle={themeToggle} />
             </div>
           ) : (
             <div className="flex items-center gap-3">
-              <Link to="/login">
-                <Button variant="outline">Login</Button>
-              </Link>
-              <Link to="/register">
-                <Button variant="primary">Register</Button>
-              </Link>
+              <NavLink to="/login" end>
+                {({ isActive }) => (
+                  <Button variant="ghost" isActive={isActive}>
+                    Login
+                  </Button>
+                )}
+              </NavLink>
+              <NavLink to="/register">
+                {({ isActive }) => (
+                  <Button variant="primary" isActive={isActive}>
+                    Register
+                  </Button>
+                )}
+              </NavLink>
               <ThemeToggler themeToggle={themeToggle} />
             </div>
           )}

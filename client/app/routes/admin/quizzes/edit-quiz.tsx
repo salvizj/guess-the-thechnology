@@ -1,4 +1,4 @@
-import type { Route } from "./+types/play"
+import type { Route } from "./+types/edit-quiz"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -7,6 +7,6 @@ export function meta({}: Route.MetaArgs) {
   ]
 }
 
-export default function Play() {
-  return <>Play</>
+export default function EditQuiz() {
+  return <>Edit Quiz</>
 }

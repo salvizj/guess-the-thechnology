@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router"
 import { useAuthContext } from "../../context/useAuthContext"
 
-const AuthenticatedRoute = () => {
+const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuthContext()
   const location = useLocation()
 
@@ -15,4 +15,4 @@ const AuthenticatedRoute = () => {
 
   return <Outlet />
 }
-export default AuthenticatedRoute
+export default ProtectedRoute

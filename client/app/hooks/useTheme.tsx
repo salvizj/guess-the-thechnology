@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { setCookie } from "../utils/cookie"
+import { getCookie, setCookie } from "../utils/cookie"
 
 type Theme = "light" | "dark"
 
@@ -10,9 +10,18 @@ const toggleDocumentClass = (theme: Theme) => {
     document.documentElement.classList.remove("dark")
   }
 }
+const getInitialTheme = (): Theme => {
+  const storedTheme = getCookie("theme") as Theme | null
+  if (storedTheme) {
+    return storedTheme
+  }
 
-export const useTheme = (initialTheme: Theme) => {
-  const [theme, setTheme] = useState<Theme>(initialTheme)
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+  return prefersDark ? "dark" : "light"
+}
+
+export const useTheme = () => {
+  const [theme, setTheme] = useState<Theme>(getInitialTheme())
 
   useEffect(() => {
     toggleDocumentClass(theme)

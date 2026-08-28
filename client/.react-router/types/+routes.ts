@@ -20,10 +20,42 @@ type Pages = {
   "/register": {
     params: {};
   };
-  "/play": {
+  "/quizzes": {
+    params: {};
+  };
+  "/quizzes/:quizId": {
+    params: {
+      "quizId": string;
+    };
+  };
+  "/play/:quizId": {
+    params: {
+      "quizId": string;
+    };
+  };
+  "/play/:quizId/results": {
+    params: {
+      "quizId": string;
+    };
+  };
+  "/profile": {
     params: {};
   };
   "/admin": {
+    params: {};
+  };
+  "/admin/quizzes": {
+    params: {};
+  };
+  "/admin/quizzes/create": {
+    params: {};
+  };
+  "/admin/quizzes/:quizId/edit": {
+    params: {
+      "quizId": string;
+    };
+  };
+  "/admin/users": {
     params: {};
   };
 };
@@ -31,7 +63,11 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/register" | "/play" | "/admin";
+    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:quizId" | "/play/:quizId" | "/play/:quizId/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+  };
+  "routes/layouts/MainLayout.tsx": {
+    id: "routes/layouts/MainLayout";
+    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:quizId" | "/play/:quizId" | "/play/:quizId/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -45,31 +81,72 @@ type RouteFiles = {
     id: "routes/auth/register";
     page: "/register";
   };
-  "routes/layouts/AuthenticatedRoute.tsx": {
-    id: "routes/layouts/AuthenticatedRoute";
-    page: "/play" | "/admin";
+  "routes/quizzes/quizzes.tsx": {
+    id: "routes/quizzes/quizzes";
+    page: "/quizzes";
+  };
+  "routes/quizzes/preview.tsx": {
+    id: "routes/quizzes/preview";
+    page: "/quizzes/:quizId";
   };
   "routes/quiz/play.tsx": {
     id: "routes/quiz/play";
-    page: "/play";
+    page: "/play/:quizId";
   };
-  "routes/layouts/AdminRoute.tsx": {
-    id: "routes/layouts/AdminRoute";
+  "routes/quiz/results.tsx": {
+    id: "routes/quiz/results";
+    page: "/play/:quizId/results";
+  };
+  "routes/layouts/ProtectedRoute.tsx": {
+    id: "routes/layouts/ProtectedRoute";
+    page: "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+  };
+  "routes/profile.tsx": {
+    id: "routes/profile";
+    page: "/profile";
+  };
+  "routes/layouts/AdminLayout.tsx": {
+    id: "routes/layouts/AdminLayout";
+    page: "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+  };
+  "routes/admin/dashboard.tsx": {
+    id: "routes/admin/dashboard";
     page: "/admin";
   };
-  "routes/admin.tsx": {
-    id: "routes/admin";
-    page: "/admin";
+  "routes/admin/quizzes/quizzes.tsx": {
+    id: "routes/admin/quizzes/quizzes";
+    page: "/admin/quizzes";
+  };
+  "routes/admin/quizzes/create-quiz.tsx": {
+    id: "routes/admin/quizzes/create-quiz";
+    page: "/admin/quizzes/create";
+  };
+  "routes/admin/quizzes/edit-quiz.tsx": {
+    id: "routes/admin/quizzes/edit-quiz";
+    page: "/admin/quizzes/:quizId/edit";
+  };
+  "routes/admin/users.tsx": {
+    id: "routes/admin/users";
+    page: "/admin/users";
   };
 };
 
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
+  "routes/layouts/MainLayout": typeof import("./app/routes/layouts/MainLayout.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
   "routes/auth/login": typeof import("./app/routes/auth/login.tsx");
   "routes/auth/register": typeof import("./app/routes/auth/register.tsx");
-  "routes/layouts/AuthenticatedRoute": typeof import("./app/routes/layouts/AuthenticatedRoute.tsx");
+  "routes/quizzes/quizzes": typeof import("./app/routes/quizzes/quizzes.tsx");
+  "routes/quizzes/preview": typeof import("./app/routes/quizzes/preview.tsx");
   "routes/quiz/play": typeof import("./app/routes/quiz/play.tsx");
-  "routes/layouts/AdminRoute": typeof import("./app/routes/layouts/AdminRoute.tsx");
-  "routes/admin": typeof import("./app/routes/admin.tsx");
+  "routes/quiz/results": typeof import("./app/routes/quiz/results.tsx");
+  "routes/layouts/ProtectedRoute": typeof import("./app/routes/layouts/ProtectedRoute.tsx");
+  "routes/profile": typeof import("./app/routes/profile.tsx");
+  "routes/layouts/AdminLayout": typeof import("./app/routes/layouts/AdminLayout.tsx");
+  "routes/admin/dashboard": typeof import("./app/routes/admin/dashboard.tsx");
+  "routes/admin/quizzes/quizzes": typeof import("./app/routes/admin/quizzes/quizzes.tsx");
+  "routes/admin/quizzes/create-quiz": typeof import("./app/routes/admin/quizzes/create-quiz.tsx");
+  "routes/admin/quizzes/edit-quiz": typeof import("./app/routes/admin/quizzes/edit-quiz.tsx");
+  "routes/admin/users": typeof import("./app/routes/admin/users.tsx");
 };

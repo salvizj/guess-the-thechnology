@@ -1,4 +1,4 @@
-import type { Route } from "./+types/play"
+import type { Route } from "./+types/users"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -7,6 +7,6 @@ export function meta({}: Route.MetaArgs) {
   ]
 }
 
-export default function Play() {
-  return <>Play</>
+export default function Users() {
+  return <>Users</>
 }

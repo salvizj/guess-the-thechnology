@@ -1,4 +1,4 @@
-import type { Route } from "./+types/admin"
+import type { Route } from "./+types/preview"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -7,6 +7,6 @@ export function meta({}: Route.MetaArgs) {
   ]
 }
 
-export default function Admin() {
-  return <>Hello admin</>
+export default function Preview() {
+  return <>Preview</>
 }

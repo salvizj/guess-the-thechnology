@@ -1,0 +1,20 @@
+import { Outlet } from "react-router"
+import Navbar from "../../components/Navbar"
+import { Footer } from "../../components/Footer"
+import { useTheme } from "../../hooks/useTheme"
+
+export default function MainLayout() {
+  const { themeToggle } = useTheme()
+
+  return (
+    <div className="flex min-h-screen flex-col bg-surface text-content">
+      <Navbar themeToggle={themeToggle} />
+
+      <main className="flex-1 flex flex-col">
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
+  )
+}
