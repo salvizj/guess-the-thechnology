@@ -37,8 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     executeVerifyJWT,
   } = useAuth()
 
-  console.log("AuthProvider: isAuthenticated", isAuthenticated)
-  console.log("AuthProvider: isAdmin", isAdmin)
   const handleVerifyJWT = async () => {
     try {
       const res = await executeVerifyJWT()

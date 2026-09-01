@@ -3,6 +3,7 @@ import Form from "../../../components/base/Form"
 import type { FieldConfig } from "../../../types/types"
 import type z from "zod"
 import { quizSchema, type QuizFormValues } from "../../../schemas/quizSchema"
+import { clearFieldError } from "../../../utils/clearFieldErrors"
 
 type CreateQuizFormProps = {
   onSubmit: (formData: QuizFormValues) => void
@@ -50,6 +51,7 @@ const CreateQuizForm = ({
           issue.message,
         ]),
       )
+      console.log("Validation errors:", fieldErrors)
       setValidationErrors(fieldErrors)
       return
     }
@@ -110,7 +112,6 @@ const CreateQuizForm = ({
       return { ...prev, questions: nextQuestions }
     })
   }
-
   const quizFields: FieldConfig[] = [
     {
       name: "title",
@@ -118,8 +119,11 @@ const CreateQuizForm = ({
       type: "text",
       placeholder: "Enter quiz title",
       value: formData.title,
-      onChange: (value) => setFormData((prev) => ({ ...prev, title: value })),
-      error: validationErrors?.title,
+      onChange: (value) => {
+        setFormData((prev) => ({ ...prev, title: value }))
+        clearFieldError("title", setValidationErrors)
+      },
+      error: validationErrors.title,
     },
     {
       name: "questions",
@@ -134,12 +138,15 @@ const CreateQuizForm = ({
           type: "text",
           placeholder: "Enter question text",
           value: question.title,
-          onChange: (val) =>
-            setFormData((prev) => {
+          error: validationErrors[`questions.${qIndex}.title`],
+          onChange: (value) => {
+            ;(setFormData((prev) => {
               const nextQuestions = [...prev.questions]
-              nextQuestions[qIndex].title = val
+              nextQuestions[qIndex].title = value
               return { ...prev, questions: nextQuestions }
             }),
+              clearFieldError(`questions.${qIndex}.title`, setValidationErrors))
+          },
         },
         {
           name: `questions.${qIndex}.image_url`,
@@ -147,12 +154,18 @@ const CreateQuizForm = ({
           type: "text",
           placeholder: "http://example.com/image.png",
           value: question.image_url,
-          onChange: (val) =>
-            setFormData((prev) => {
+          error: validationErrors[`questions.${qIndex}.image_url`],
+          onChange: (value) => {
+            ;(setFormData((prev) => {
               const nextQuestions = [...prev.questions]
-              nextQuestions[qIndex].image_url = val
+              nextQuestions[qIndex].image_url = value
               return { ...prev, questions: nextQuestions }
             }),
+              clearFieldError(
+                `questions.${qIndex}.image_url`,
+                setValidationErrors,
+              ))
+          },
         },
         {
           name: `questions.${qIndex}.difficulty`,
@@ -160,12 +173,18 @@ const CreateQuizForm = ({
           type: "select",
           options: ["easy", "medium", "hard"],
           value: question.difficulty,
-          onChange: (val) =>
-            setFormData((prev) => {
+          error: validationErrors[`questions.${qIndex}.difficulty`],
+          onChange: (value) => {
+            ;(setFormData((prev) => {
               const nextQuestions = [...prev.questions]
-              nextQuestions[qIndex].difficulty = val
+              nextQuestions[qIndex].difficulty = value
               return { ...prev, questions: nextQuestions }
             }),
+              clearFieldError(
+                `questions.${qIndex}.difficulty`,
+                setValidationErrors,
+              ))
+          },
         },
         {
           name: `questions.${qIndex}.category`,
@@ -173,12 +192,18 @@ const CreateQuizForm = ({
           type: "text",
           placeholder: "Category name",
           value: question.category,
-          onChange: (val) =>
-            setFormData((prev) => {
+          error: validationErrors[`questions.${qIndex}.category`],
+          onChange: (value) => {
+            ;(setFormData((prev) => {
               const nextQuestions = [...prev.questions]
-              nextQuestions[qIndex].category = val
+              nextQuestions[qIndex].category = value
               return { ...prev, questions: nextQuestions }
             }),
+              clearFieldError(
+                `questions.${qIndex}.category`,
+                setValidationErrors,
+              ))
+          },
         },
         {
           name: `questions.${qIndex}.answers`,
@@ -193,25 +218,44 @@ const CreateQuizForm = ({
               type: "text",
               placeholder: "Enter option text",
               value: answer.option_text,
-              onChange: (val) =>
-                setFormData((prev) => {
+              error:
+                validationErrors[
+                  `questions.${qIndex}.answers.${aIndex}.option_text`
+                ],
+              onChange: (value) => {
+                ;(setFormData((prev) => {
                   const nextQuestions = [...prev.questions]
-                  nextQuestions[qIndex].answers[aIndex].option_text = val
+                  nextQuestions[qIndex].answers[aIndex].option_text = value
                   return { ...prev, questions: nextQuestions }
                 }),
+                  clearFieldError(
+                    `questions.${qIndex}.answers.${aIndex}.option_text`,
+                    setValidationErrors,
+                  ))
+              },
             },
             {
               name: `questions.${qIndex}.answers.${aIndex}.correct`,
               label: "Is Correct Choice?",
               type: "select",
               options: ["true", "false"],
+              error:
+                validationErrors[
+                  `questions.${qIndex}.answers.${aIndex}.correct`
+                ],
               value: String(answer.correct),
-              onChange: (val) =>
-                setFormData((prev) => {
+              onChange: (value) => {
+                ;(setFormData((prev) => {
                   const nextQuestions = [...prev.questions]
-                  nextQuestions[qIndex].answers[aIndex].correct = val === "true"
+                  nextQuestions[qIndex].answers[aIndex].correct =
+                    value === "true"
                   return { ...prev, questions: nextQuestions }
                 }),
+                  clearFieldError(
+                    `questions.${qIndex}.answers.${aIndex}.correct`,
+                    setValidationErrors,
+                  ))
+              },
             },
           ]),
         },

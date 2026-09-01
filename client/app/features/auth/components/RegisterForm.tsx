@@ -6,6 +6,7 @@ import {
   registerSchema,
   type RegisterSchema,
 } from "../../../schemas/registerSchema"
+import { clearFieldError } from "../../../utils/clearFieldErrors"
 
 type RegisterFormProps = {
   onSubmit: (formData: RegisterSchema) => void
@@ -60,6 +61,7 @@ const RegisterForm = ({
       value: formData.username,
       onChange: (value) => {
         setFormData({ ...formData, username: value })
+        clearFieldError("username", setValidationErrors)
       },
       error: validationErrors.username,
     },
@@ -71,6 +73,7 @@ const RegisterForm = ({
       value: formData.email,
       onChange: (value) => {
         setFormData({ ...formData, email: value })
+        clearFieldError("email", setValidationErrors)
       },
       error: validationErrors.email,
     },
@@ -82,6 +85,7 @@ const RegisterForm = ({
       value: formData.password,
       onChange: (value) => {
         setFormData({ ...formData, password: value })
+        clearFieldError("password", setValidationErrors)
       },
       error: validationErrors.password,
     },
@@ -93,6 +97,7 @@ const RegisterForm = ({
       value: formData.confirmPassword,
       onChange: (value) => {
         setFormData({ ...formData, confirmPassword: value })
+        clearFieldError("confirmPassword", setValidationErrors)
       },
       error: validationErrors.confirmPassword,
     },

@@ -2,14 +2,17 @@ import { z } from "zod"
 
 export const answerSchema = z.object({
   option_text: z.string().min(1, "Option text cannot be empty"),
-  correct: z.preprocess((val) => val === "true" || val === true, z.boolean()),
+  correct: z.preprocess(
+    (value) => value === "true" || value === true,
+    z.boolean(),
+  ),
 })
 
 export const questionSchema = z.object({
   title: z.string().min(3, "Question title must be at least 3 characters"),
-  image_url: z.string().url("Must be a valid URL").or(z.literal("")),
+  image_url: z.url({ message: "Must be a valid URL" }).or(z.literal("")),
   difficulty: z.enum(["easy", "medium", "hard"], {
-    errorMap: () => ({ message: "Select a valid difficulty" }),
+    message: "Select a valid difficulty",
   }),
   category: z
     .string()

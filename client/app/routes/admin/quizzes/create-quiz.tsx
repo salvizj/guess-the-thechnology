@@ -10,7 +10,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function CreateQuiz() {
-  const onSubmit = () => {}
+  const onSubmit = (formData: QuizFormValues) => {
+    console.log("Form submitted:", formData)
+  }
   return (
     <>
       <CreateQuizForm onSubmit={onSubmit} />
