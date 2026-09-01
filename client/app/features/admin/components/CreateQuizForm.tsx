@@ -87,16 +87,26 @@ const CreateQuizForm = ({
 
   const handleAnswerAdd = (qIndex: number) => {
     setFormData((prev) => {
-      const nextQuestions = [...prev.questions]
-      nextQuestions[qIndex].answers.push({ option_text: "", correct: false })
+      const nextQuestions = prev.questions.map((q, idx) => {
+        if (idx !== qIndex) return q
+        return {
+          ...q,
+          answers: [...q.answers, { option_text: "", correct: false }],
+        }
+      })
       return { ...prev, questions: nextQuestions }
     })
   }
 
   const handleAnswerRemove = (qIndex: number, aIndex: number) => {
     setFormData((prev) => {
-      const nextQuestions = [...prev.questions]
-      nextQuestions[qIndex].answers.splice(aIndex, 1)
+      const nextQuestions = prev.questions.map((q, idx) => {
+        if (idx !== qIndex) return q
+        return {
+          ...q,
+          answers: q.answers.filter((_, answerIdx) => answerIdx !== aIndex),
+        }
+      })
       return { ...prev, questions: nextQuestions }
     })
   }

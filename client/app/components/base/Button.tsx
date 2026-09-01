@@ -65,7 +65,10 @@ const Button = ({
   return (
     <button
       type={type}
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick?.()
+      }}
       className={`${base} ${spacing} ${focus} ${appliedVariant} ${className}`}
       {...rest}
     >

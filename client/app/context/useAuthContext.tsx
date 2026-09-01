@@ -27,15 +27,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
+  const [isVerifying, setIsVerifying] = useState<boolean>(true)
   const {
     error,
-    isLoading,
+    isLoading: authHookLoading,
     executeLogin,
     executeRegister,
     executeLogout,
     executeVerifyJWT,
   } = useAuth()
 
+  console.log("AuthProvider: isAuthenticated", isAuthenticated)
+  console.log("AuthProvider: isAdmin", isAdmin)
   const handleVerifyJWT = async () => {
     try {
       const res = await executeVerifyJWT()
@@ -43,6 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAdmin(Boolean(res && (res.isAdmin === 1 || res.isAdmin === true)))
     } catch {
       setIsAuthenticated(false)
+    } finally {
+      setIsVerifying(false)
     }
   }
 
@@ -71,6 +76,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAuthenticated(false)
     } catch (err) {
       throw err
+    } finally {
+      setIsAuthenticated(false)
+      setIsAdmin(false)
+      navigate("/login", { replace: true })
     }
   }
 
@@ -86,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
-        isLoading,
+        isLoading: authHookLoading || isVerifying,
         error,
         isAuthenticated,
         setIsAuthenticated,
