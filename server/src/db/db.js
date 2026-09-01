@@ -30,12 +30,22 @@ db.serialize(() => {
   `)
 
   db.run(`
+    CREATE TABLE IF NOT EXISTS quizzes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `)
+
+  db.run(`
     CREATE TABLE IF NOT EXISTS questions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      quiz_id INTEGER NOT NULL,
       title TEXT NOT NULL,
       image_url TEXT,
       difficulty TEXT CHECK(difficulty IN ('easy', 'medium', 'hard')),
-      category TEXT NOT NULL
+      category TEXT NOT NULL,
+      FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
     );
   `)
 
@@ -44,7 +54,7 @@ db.serialize(() => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       question_id INTEGER NOT NULL,
       option_text TEXT NOT NULL,
-      correct BOOLEAN NOT NULL,
+      correct BOOLEAN NOT NULL CHECK (correct IN (0, 1)),
       FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
     );
   `)

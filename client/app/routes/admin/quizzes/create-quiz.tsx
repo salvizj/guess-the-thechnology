@@ -1,3 +1,5 @@
+import CreateQuizForm from "../../../features/admin/components/CreateQuizForm"
+import type { QuizFormValues } from "../../../schemas/quizSchema"
 import type { Route } from "./+types/create-quiz"
 
 export function meta({}: Route.MetaArgs) {
@@ -8,5 +10,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function CreateQuiz() {
-  return <>Create Quiz</>
+  const onSubmit = () => {}
+  return (
+    <>
+      <CreateQuizForm onSubmit={onSubmit} />
+    </>
+  )
 }

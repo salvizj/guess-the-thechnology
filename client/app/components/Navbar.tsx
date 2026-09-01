@@ -31,7 +31,7 @@ export default function Navbar({ themeToggle }: NavbarProps) {
           {isAuthenticated ? (
             <div className="flex items-center gap-3">
               {isAdmin && (
-                <NavLink to="/admin" end>
+                <NavLink to="/admin">
                   {({ isActive }) => (
                     <Button variant="ghost" isActive={isActive}>
                       Admin

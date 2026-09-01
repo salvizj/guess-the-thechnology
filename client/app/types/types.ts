@@ -10,22 +10,46 @@ type BaseField = {
   error?: string
 }
 
-type TextFieldConfig = BaseField & {
-  type: "text" | "email" | "date" | "number" | "password" | "textarea"
-  value: string
-  onChange: (value: string) => void
+export type PrimitiveFieldConfig = BaseField & {
+  type:
+    | "text"
+    | "email"
+    | "date"
+    | "number"
+    | "password"
+    | "textarea"
+    | "select"
+    | "file"
+  value: any
+  options?: string[]
+  onRemove?: () => void
+  onChange: (value: any) => void
 }
 
-type SelectFieldConfig = BaseField & {
-  type: "select"
-  options: string[]
-  value: string
-  onChange: (value: string) => void
+export type ArrayFieldConfig = BaseField & {
+  type: "array"
+  onRemove?: (index: number) => void
+  onAdd: () => void
+
+  fields: FieldConfig[][]
 }
 
-type FileFieldConfig = BaseField & {
-  type: "file"
-  onChange: (file: File | null) => void
+export type FieldConfig = PrimitiveFieldConfig | ArrayFieldConfig
+
+export type Quiz = {
+  quuizid?: number
+  title: string
 }
 
-export type FieldConfig = TextFieldConfig | SelectFieldConfig | FileFieldConfig
+export type Quesiton = {
+  question_id?: number
+  title: string
+  image_url: string
+  difficulty: string
+  category: string
+}
+export type Answer = {
+  answer_id?: number
+  title: string
+  correct: boolean
+}

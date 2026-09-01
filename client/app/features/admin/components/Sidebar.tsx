@@ -11,20 +11,20 @@ const Sidebar = () => {
           </Button>
         )}
       </NavLink>
-      <NavLink to="/admin/quizzes">
+      <NavLink to="/admin/quizzes" end>
         {({ isActive }) => (
           <Button variant="ghost" isActive={isActive}>
             Manage Quizzes
           </Button>
         )}
-      </NavLink>{" "}
+      </NavLink>
       <NavLink to="/admin/quizzes/create">
         {({ isActive }) => (
           <Button variant="ghost" isActive={isActive}>
             Create Quiz
           </Button>
         )}
-      </NavLink>{" "}
+      </NavLink>
       <NavLink to="/admin/users">
         {({ isActive }) => (
           <Button variant="ghost" isActive={isActive}>
