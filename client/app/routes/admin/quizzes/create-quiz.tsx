@@ -1,5 +1,7 @@
-import CreateQuizForm from "../../../features/admin/components/CreateQuizForm"
-import type { QuizFormValues } from "../../../schemas/quizSchema"
+import { useNavigate } from "react-router"
+import CreateQuizForm from "../../../features/quizzes/components/CreateQuizForm"
+import useQuiz from "../../../features/quizzes/hooks/useQuiz"
+import type { QuizSchema } from "../../../schemas/quizSchema"
 import type { Route } from "./+types/create-quiz"
 
 export function meta({}: Route.MetaArgs) {
@@ -10,12 +12,22 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function CreateQuiz() {
-  const onSubmit = (formData: QuizFormValues) => {
-    console.log("Form submitted:", formData)
+  const { createQuiz, error } = useQuiz()
+  const navigate = useNavigate()
+  const onSubmit = async (formData: QuizSchema) => {
+    try {
+      const response = await createQuiz(formData)
+
+      if (response?.quiz?.id) {
+        console.log("Quiz created successfully:", response)
+        navigate("/admin/quizzes")
+      }
+    } catch (error) {}
   }
   return (
     <>
       <CreateQuizForm onSubmit={onSubmit} />
+      {error && <p className="error">{error}</p>}
     </>
   )
 }

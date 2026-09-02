@@ -32,4 +32,6 @@ export const quizSchema = z.object({
     .min(1, "Quiz must contain at least 1 question"),
 })
 
-export type QuizFormValues = z.infer<typeof quizSchema>
+export type QuizSchema = z.infer<typeof quizSchema>
+export type QuestionSchema = z.infer<typeof questionSchema>
+export type AnswerSchema = z.infer<typeof answerSchema>

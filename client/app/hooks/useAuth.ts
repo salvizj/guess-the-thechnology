@@ -17,10 +17,10 @@ const useAuth = () => {
     try {
       const res = await fetchLogin(data)
       return res
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Login failed"
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Login failed"
       setError(message)
-      throw err
+      throw error
     } finally {
       setIsLoading(false)
     }
@@ -31,10 +31,11 @@ const useAuth = () => {
     try {
       const res = await fetchRegister(data)
       return res
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Registration failed"
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Registration failed"
       setError(message)
-      throw err
+      throw error
     } finally {
       setIsLoading(false)
     }
@@ -45,10 +46,10 @@ const useAuth = () => {
     try {
       const res = await fetchLogout()
       return res
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Logout failed"
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Logout failed"
       setError(message)
-      throw err
+      throw error
     } finally {
       setIsLoading(false)
     }
@@ -59,7 +60,7 @@ const useAuth = () => {
     try {
       const res = await fetchVerifyJWT()
       return res
-    } catch (err) {
+    } catch (error) {
       return { isValid: false, isAdmin: false }
     } finally {
       setIsLoading(false)

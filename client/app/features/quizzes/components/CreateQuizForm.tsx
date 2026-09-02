@@ -2,11 +2,11 @@ import { useState } from "react"
 import Form from "../../../components/base/Form"
 import type { FieldConfig } from "../../../types/types"
 import type z from "zod"
-import { quizSchema, type QuizFormValues } from "../../../schemas/quizSchema"
+import { quizSchema, type QuizSchema } from "../../../schemas/quizSchema"
 import { clearFieldError } from "../../../utils/clearFieldErrors"
 
 type CreateQuizFormProps = {
-  onSubmit: (formData: QuizFormValues) => void
+  onSubmit: (formData: QuizSchema) => void
   submitLabel?: string
   isLoading?: boolean
   error?: string | null
@@ -51,7 +51,6 @@ const CreateQuizForm = ({
           issue.message,
         ]),
       )
-      console.log("Validation errors:", fieldErrors)
       setValidationErrors(fieldErrors)
       return
     }

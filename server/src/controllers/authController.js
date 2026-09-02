@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { dbGet, dbRun } from "../db/utils.js"
+import { eq, or } from "drizzle-orm"
+import { db } from "../db/db.js"
+import { users } from "../db/schema.js"
 
 export const postRegister = async (req, res) => {
   try {
@@ -8,32 +10,45 @@ export const postRegister = async (req, res) => {
     if (!username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" })
     }
-    const existingUser = await dbGet(
-      "SELECT id FROM users WHERE email = ? OR username = ?",
-      [email, username],
-    )
+
+    const existingUser = db
+      .select({ id: users.id })
+      .from(users)
+      .where(or(eq(users.email, email), eq(users.username, username)))
+      .get()
+
     if (existingUser) {
       return res.status(409).json({ message: "User already exists" })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const user = await dbRun(
-      "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
-      [username, email, hashedPassword],
-    )
+    const [newUser] = db
+      .insert(users)
+      .values({
+        username,
+        email,
+        passwordHash: hashedPassword,
+      })
+      .returning({ id: users.id, username: users.username, email: users.email })
+      .get()
+
     const secret = process.env.JWT_SECRET || "fallback_development_secret"
-    const token = jwt.sign({ userId: user.lastID }, secret, {
+    const token = jwt.sign({ userId: newUser.id }, secret, {
       expiresIn: "1h",
     })
 
     res.cookie("JWT", token, { httpOnly: true, sameSite: "strict" })
     return res.status(201).json({
       message: "User registered successfully",
-      user: { id: user.lastID, username, email },
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+      },
     })
-  } catch (err) {
-    console.error("Registration Error:", err)
+  } catch (error) {
+    console.error("Registration Error:", error)
     return res.status(500).json({ message: "Internal server error" })
   }
 }
@@ -44,23 +59,22 @@ export const postLogin = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" })
     }
-    const user = await dbGet("SELECT * FROM users WHERE email = ?", [email])
+
+    const user = db.select().from(users).where(eq(users.email, email)).get()
+
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" })
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password_hash)
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid credentials" })
     }
+
     const secret = process.env.JWT_SECRET || "fallback_development_secret"
-    const token = jwt.sign(
-      { userId: user.id, isAdmin: user.is_admin },
-      secret,
-      {
-        expiresIn: "1h",
-      },
-    )
+    const token = jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, secret, {
+      expiresIn: "1h",
+    })
 
     res.cookie("JWT", token, { httpOnly: true, sameSite: "strict" })
     return res.status(200).json({
@@ -69,16 +83,16 @@ export const postLogin = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        isAdmin: user.is_admin,
+        isAdmin: user.isAdmin,
       },
     })
-  } catch (err) {
-    console.error("Login Error:", err)
+  } catch (error) {
+    console.error("Login Error:", error)
     return res.status(500).json({ message: "Internal server error" })
   }
 }
 
-const postLogout = (req, res) => {
+export const postLogout = (req, res) => {
   res.clearCookie("JWT", { httpOnly: true, sameSite: "strict" })
   return res.status(200).json({ message: "Logged out successfully" })
 }

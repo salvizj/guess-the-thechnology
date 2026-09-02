@@ -28,18 +28,9 @@ const requireAuth = (req, res, next) => {
     req.userId = decoded.userId
     req.isAdmin = decoded.isAdmin
     next()
-  } catch (err) {
+  } catch (error) {
     return res.status(403).json({ message: "Invalid or expired token" })
   }
 }
 
-const isAdmin = (req, res, next) => {
-  if (!req.isAdmin) {
-    return res
-      .status(403)
-      .json({ message: "Access denied. Admin privileges required." })
-  }
-  next()
-}
-
-export { requireAuth, isAdmin }
+export { requireAuth }

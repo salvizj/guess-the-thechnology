@@ -61,9 +61,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         Boolean(res?.user?.isAdmin === 1 || res?.user?.isAdmin === true),
       )
       navigate("/", { replace: true })
-    } catch (err) {
+    } catch (error) {
       setIsAuthenticated(false)
-      throw err
+      throw error
     }
   }
 
@@ -72,8 +72,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await executeLogout()
       navigate("/login", { replace: true })
       setIsAuthenticated(false)
-    } catch (err) {
-      throw err
+    } catch (error) {
+      throw error
     } finally {
       setIsAuthenticated(false)
       setIsAdmin(false)
@@ -85,8 +85,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await executeRegister(data)
       navigate("/login")
-    } catch (err) {
-      throw err
+    } catch (error) {
+      throw error
     }
   }
 
