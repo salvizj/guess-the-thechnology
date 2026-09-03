@@ -23,19 +23,19 @@ type Pages = {
   "/quizzes": {
     params: {};
   };
-  "/quizzes/:quizId": {
+  "/quizzes/:id": {
     params: {
-      "quizId": string;
+      "id": string;
     };
   };
-  "/play/:quizId": {
+  "/play/:id": {
     params: {
-      "quizId": string;
+      "id": string;
     };
   };
-  "/play/:quizId/results": {
+  "/play/:id/results": {
     params: {
-      "quizId": string;
+      "id": string;
     };
   };
   "/profile": {
@@ -50,9 +50,9 @@ type Pages = {
   "/admin/quizzes/create": {
     params: {};
   };
-  "/admin/quizzes/:quizId/edit": {
+  "/admin/quizzes/:id/edit": {
     params: {
-      "quizId": string;
+      "id": string;
     };
   };
   "/admin/users": {
@@ -63,11 +63,11 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:quizId" | "/play/:quizId" | "/play/:quizId/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:id" | "/play/:id" | "/play/:id/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
   };
   "routes/layouts/MainLayout.tsx": {
     id: "routes/layouts/MainLayout";
-    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:quizId" | "/play/:quizId" | "/play/:quizId/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:id" | "/play/:id" | "/play/:id/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -87,19 +87,19 @@ type RouteFiles = {
   };
   "routes/quizzes/preview.tsx": {
     id: "routes/quizzes/preview";
-    page: "/quizzes/:quizId";
+    page: "/quizzes/:id";
   };
   "routes/quiz/play.tsx": {
     id: "routes/quiz/play";
-    page: "/play/:quizId";
+    page: "/play/:id";
   };
   "routes/quiz/results.tsx": {
     id: "routes/quiz/results";
-    page: "/play/:quizId/results";
+    page: "/play/:id/results";
   };
   "routes/layouts/ProtectedRoute.tsx": {
     id: "routes/layouts/ProtectedRoute";
-    page: "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+    page: "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
   };
   "routes/profile.tsx": {
     id: "routes/profile";
@@ -107,7 +107,7 @@ type RouteFiles = {
   };
   "routes/layouts/AdminLayout.tsx": {
     id: "routes/layouts/AdminLayout";
-    page: "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:quizId/edit" | "/admin/users";
+    page: "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
   };
   "routes/admin/dashboard.tsx": {
     id: "routes/admin/dashboard";
@@ -123,7 +123,7 @@ type RouteFiles = {
   };
   "routes/admin/quizzes/edit-quiz.tsx": {
     id: "routes/admin/quizzes/edit-quiz";
-    page: "/admin/quizzes/:quizId/edit";
+    page: "/admin/quizzes/:id/edit";
   };
   "routes/admin/users.tsx": {
     id: "routes/admin/users";
