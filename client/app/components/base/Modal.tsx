@@ -15,7 +15,7 @@ const sizeMap = {
   lg: "max-w-lg",
   xl: "max-w-xl",
 }
-const Modal = ({
+export const Modal = ({
   isOpen,
   onClose,
   title,
@@ -52,4 +52,3 @@ const Modal = ({
     </div>
   )
 }
-export default Modal

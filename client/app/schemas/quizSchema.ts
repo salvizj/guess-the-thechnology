@@ -27,6 +27,9 @@ export const questionSchema = z.object({
 
 export const quizSchema = z.object({
   title: z.string().min(3, "Quiz title must be at least 3 characters"),
+  description: z
+    .string()
+    .min(10, "Quiz description must be at least 10 characters"),
   questions: z
     .array(questionSchema)
     .min(1, "Quiz must contain at least 1 question"),

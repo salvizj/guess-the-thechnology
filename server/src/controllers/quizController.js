@@ -4,16 +4,27 @@ import { quizzes, questions, answers } from "../db/schema.js"
 
 export const postCreateQuiz = async (req, res) => {
   try {
-    const { title, questions: questionsData } = req.body
+    const { title, description, questions: questionsData } = req.body
 
-    if (!title || !Array.isArray(questionsData) || questionsData.length === 0) {
+    if (
+      !title ||
+      !description ||
+      !Array.isArray(questionsData) ||
+      questionsData.length === 0
+    ) {
       return res
         .status(400)
-        .json({ message: "Quiz title and questions are required" })
+        .json({
+          message: "Quiz title, description, and questions are required",
+        })
     }
 
     const newQuiz = db.transaction((tx) => {
-      const quiz = tx.insert(quizzes).values({ title }).returning().get()
+      const quiz = tx
+        .insert(quizzes)
+        .values({ title, description })
+        .returning()
+        .get()
 
       for (const q of questionsData) {
         const question = tx
@@ -21,6 +32,7 @@ export const postCreateQuiz = async (req, res) => {
           .values({
             quizId: quiz.id,
             title: q.title,
+            description: q.description,
             imageUrl: q.image_url || q.imageUrl,
             difficulty: q.difficulty,
             category: q.category,

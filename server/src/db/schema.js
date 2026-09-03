@@ -14,6 +14,7 @@ export const users = sqliteTable("users", {
 export const quizzes = sqliteTable("quizzes", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
+  description: text("description").notNull(),
   createdAt: text("created_at").default(sql`(CURRENT_TIMESTAMP)`),
 })
 

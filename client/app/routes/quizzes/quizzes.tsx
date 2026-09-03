@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react"
+import useQuiz from "../../features/quizzes/hooks/useQuiz"
 import type { Route } from "./+types/quizzes"
+import type { Quiz } from "../../types/types"
+import { QuizCard } from "../../features/quizzes/components/QuizCard"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,5 +12,22 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Quizzes() {
-  return <>Quizzes</>
+  const { getQuizzes } = useQuiz()
+  const [quizzes, setQuizzes] = useState<Quiz[]>([])
+
+  useEffect(() => {
+    getQuizzes()
+      .then((data) => setQuizzes(data))
+      .catch(() => {})
+  }, [getQuizzes])
+
+  return (
+    <>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {quizzes.map((quiz) => (
+          <QuizCard key={quiz.id} quiz={quiz} />
+        ))}
+      </div>
+    </>
+  )
 }

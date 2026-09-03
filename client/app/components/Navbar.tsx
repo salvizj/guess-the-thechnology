@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router"
 import { ThemeToggler } from "./ThemeToggler"
 import { useAuthContext } from "../context/useAuthContext"
-import Button from "./base/Button"
+import { Button } from "./base/Button"
 
 type NavbarProps = {
   themeToggle: () => void

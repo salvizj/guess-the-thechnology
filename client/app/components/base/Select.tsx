@@ -7,7 +7,7 @@ type SelectProps = {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
-const Select = ({
+export const Select = ({
   label,
   error,
   options,
@@ -53,4 +53,3 @@ const Select = ({
     </div>
   )
 }
-export default Select

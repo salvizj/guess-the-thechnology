@@ -12,7 +12,7 @@ type ButtonProps = {
   isActive?: boolean
 }
 
-const variantClasses = {
+export const variantClasses = {
   primary:
     "bg-[var(--color-primary)] text-white border border-[var(--color-primary)] hover:bg-[var(--color-primary-light)] hover:border-[var(--color-primary-light)] ",
   secondary:
@@ -26,7 +26,7 @@ const variantClasses = {
   danger:
     "bg-[var(--color-error)] text-white border border-[var(--color-error)] hover:opacity-90",
 }
-const activeClasses = {
+export const activeClasses = {
   primary:
     "bg-[var(--color-primary-dark)] text-white border border-[var(--color-primary-dark)] font-semibold ring-2 ring-[var(--color-primary)]/20",
   secondary:
@@ -41,7 +41,7 @@ const activeClasses = {
     "bg-[var(--color-error)] text-white border border-[var(--color-error)] font-semibold brightness-95",
 }
 
-const Button = ({
+export const Button = ({
   variant = "primary",
   children,
   type = "button",
@@ -76,4 +76,3 @@ const Button = ({
     </button>
   )
 }
-export default Button

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import {
   fetchCreateQuiz,
   fetchDeleteQuiz,
@@ -12,7 +12,7 @@ const useQuiz = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const createQuiz = async (data: QuizSchema) => {
+  const createQuiz = useCallback(async (data: QuizSchema) => {
     setIsLoading(true)
     setError(null)
     try {
@@ -26,9 +26,9 @@ const useQuiz = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const updateQuiz = async (id: string, data: QuizSchema) => {
+  const updateQuiz = useCallback(async (id: string, data: QuizSchema) => {
     setIsLoading(true)
     setError(null)
     try {
@@ -42,9 +42,9 @@ const useQuiz = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const deleteQuiz = async (id: string) => {
+  const deleteQuiz = useCallback(async (id: string) => {
     setIsLoading(true)
     setError(null)
     try {
@@ -58,9 +58,9 @@ const useQuiz = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const getQuiz = async (id: string) => {
+  const getQuiz = useCallback(async (id: string) => {
     setIsLoading(true)
     setError(null)
     try {
@@ -74,9 +74,9 @@ const useQuiz = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const getQuizzes = async () => {
+  const getQuizzes = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
@@ -90,7 +90,7 @@ const useQuiz = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
   return {
     isLoading,

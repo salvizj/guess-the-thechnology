@@ -23,7 +23,7 @@ export const postRegister = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const [newUser] = db
+    const newUser = db
       .insert(users)
       .values({
         username,

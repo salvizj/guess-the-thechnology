@@ -1,5 +1,5 @@
 import { NavLink } from "react-router"
-import Button from "./base/Button"
+import { Button } from "./base/Button"
 
 const Sidebar = () => {
   return (

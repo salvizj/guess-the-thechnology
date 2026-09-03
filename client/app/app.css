@@ -4,37 +4,37 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-primary: #b84a39;
-  --color-primary-light: #d66853;
-  --color-secondary: #7a4332;
-  --color-accent: #e07a5f;
-  --color-surface: #faf0e6;
-  --color-surface-secondary: #f2e2d2;
-  --color-surface-elevated: #ffffff;
-  --color-content: #2b1e1a;
-  --color-content-secondary: #5c443b;
-  --color-content-muted: #9c847a;
-  --color-success: #6fcf97;
-  --color-warning: #f4c06a;
-  --color-error: #f08a8a;
-  --color-border: #e6d0c1;
+  --color-primary: #2d4f67;
+  --color-primary-light: #436a85;
+  --color-secondary: #6a9589;
+  --color-accent: #e82424;
+  --color-surface: #f2ecbc;
+  --color-surface-secondary: #e5ddb0;
+  --color-surface-elevated: #fffbf0;
+  --color-content: #1f1f28;
+  --color-content-secondary: #54546d;
+  --color-content-muted: #7e7e8d;
+  --color-success: #76946a;
+  --color-warning: #ffa066;
+  --color-error: #c34043;
+  --color-border: #dcd7ba;
 }
 
 .dark {
-  --color-primary: #d95338;
-  --color-primary-light: #f27052;
-  --color-secondary: #9c523b;
-  --color-accent: #f48c06;
-  --color-surface: #1a0f0d;
-  --color-surface-secondary: #261613;
-  --color-surface-elevated: #361f1a;
-  --color-content: #fceee9;
-  --color-content-secondary: #d9c0b5;
-  --color-content-muted: #9e8579;
-  --color-success: #8ef0b8;
-  --color-warning: #ffd98a;
-  --color-error: #ff9ba8;
-  --color-border: #4d2d26;
+  --color-primary: #7e9cd8;
+  --color-primary-light: #a3d4d5;
+  --color-secondary: #6a9589;
+  --color-accent: #ffa066;
+  --color-surface: #1f1f28;
+  --color-surface-secondary: #16161d;
+  --color-surface-elevated: #2a2a37;
+  --color-content: #dcd7ba;
+  --color-content-secondary: #9a9a8f;
+  --color-content-muted: #727169;
+  --color-success: #76946a;
+  --color-warning: #e6c384;
+  --color-error: #c34043;
+  --color-border: #363646;
 }
 
 @theme {
@@ -64,4 +64,44 @@ h4,
 h5,
 h6 {
   font-family: var(--font-display);
+  color: var(--color-content);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.015em;
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+  color: var(--color-content-secondary);
+}
+
+p {
+  font-size: 0.9375rem;
+  color: var(--color-content);
+  margin-top: 0;
+  margin-bottom: 1em;
 }

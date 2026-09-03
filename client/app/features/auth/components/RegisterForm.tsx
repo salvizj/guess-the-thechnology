@@ -1,5 +1,4 @@
 import { useState } from "react"
-import Form from "../../../components/base/Form"
 import type { FieldConfig } from "../../../types/types"
 import type z from "zod"
 import {
@@ -7,6 +6,7 @@ import {
   type RegisterSchema,
 } from "../../../schemas/registerSchema"
 import { clearFieldError } from "../../../utils/clearFieldErrors"
+import { Form } from "../../../components/base/Form"
 
 type RegisterFormProps = {
   onSubmit: (formData: RegisterSchema) => void

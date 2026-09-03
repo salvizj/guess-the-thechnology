@@ -1,6 +1,6 @@
-import Button from "./Button"
 import type { FieldConfig } from "../../types/types"
 import { RenderField } from "../RenderField"
+import { Button } from "./Button"
 
 type FormProps = {
   fields: FieldConfig[]
@@ -10,7 +10,7 @@ type FormProps = {
   error?: string | null
 }
 
-const Form = ({
+export const Form = ({
   fields,
   onSubmit,
   submitLabel = "Submit",
@@ -34,5 +34,3 @@ const Form = ({
     </form>
   )
 }
-
-export default Form

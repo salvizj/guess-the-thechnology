@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import {
   fetchLogin,
   fetchRegister,
@@ -55,7 +55,7 @@ const useAuth = () => {
     }
   }
 
-  const executeVerifyJWT = async () => {
+  const executeVerifyJWT = useCallback(async () => {
     setIsLoading(true)
     try {
       const res = await fetchVerifyJWT()
@@ -65,8 +65,7 @@ const useAuth = () => {
     } finally {
       setIsLoading(false)
     }
-  }
-
+  }, [])
   return {
     isLoading,
     error,

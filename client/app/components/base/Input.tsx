@@ -8,7 +8,7 @@ type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Input = ({
+export const Input = ({
   label,
   error,
   type,
@@ -58,4 +58,3 @@ const Input = ({
     </div>
   )
 }
-export default Input

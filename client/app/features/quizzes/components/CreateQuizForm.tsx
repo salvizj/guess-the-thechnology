@@ -1,9 +1,9 @@
 import { useState } from "react"
-import Form from "../../../components/base/Form"
 import type { FieldConfig } from "../../../types/types"
 import type z from "zod"
 import { quizSchema, type QuizSchema } from "../../../schemas/quizSchema"
 import { clearFieldError } from "../../../utils/clearFieldErrors"
+import { Form } from "../../../components/base/Form"
 
 type CreateQuizFormProps = {
   onSubmit: (formData: QuizSchema) => void
@@ -20,6 +20,7 @@ const CreateQuizForm = ({
 }: CreateQuizFormProps) => {
   const [formData, setFormData] = useState({
     title: "",
+    description: "",
     questions: [
       {
         title: "",
@@ -123,6 +124,18 @@ const CreateQuizForm = ({
         clearFieldError("title", setValidationErrors)
       },
       error: validationErrors.title,
+    },
+    {
+      name: "description",
+      label: "Quiz Description",
+      type: "text",
+      placeholder: "Enter quiz description",
+      value: formData.description,
+      onChange: (value) => {
+        setFormData((prev) => ({ ...prev, description: value }))
+        clearFieldError("description", setValidationErrors)
+      },
+      error: validationErrors.description,
     },
     {
       name: "questions",

@@ -1,5 +1,5 @@
 import { SunMoon } from "lucide-react"
-import Button from "./base/Button"
+import { Button } from "./base/Button"
 
 type ThemeTogglerProps = {
   themeToggle: () => void

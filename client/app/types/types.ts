@@ -36,20 +36,44 @@ export type ArrayFieldConfig = BaseField & {
 
 export type FieldConfig = PrimitiveFieldConfig | ArrayFieldConfig
 
-export type Quiz = {
-  quuizid?: number
-  title: string
+export type QuestionDifficulty = "easy" | "medium" | "hard"
+
+export type User = {
+  id?: number
+  username: string
+  email: string
+  passwordHash: string
+  isAdmin?: boolean
 }
 
-export type Quesiton = {
-  question_id?: number
+export type Quiz = {
+  id?: number
   title: string
-  image_url: string
-  difficulty: string
-  category: string
+  description: string
+  createdAt: string
+  questions: Question[]
 }
-export type Answer = {
-  answer_id?: number
+
+export type Question = {
+  id?: number
+  quizId: number
   title: string
+  imageUrl: string
+  difficulty: QuestionDifficulty
+  category: string
+  answers: Answer[]
+}
+
+export type Answer = {
+  id?: number
+  questionId: number
+  optionText: string
   correct: boolean
+}
+
+export type Score = {
+  id?: number
+  userId: number
+  score: number
+  createdAt?: string
 }

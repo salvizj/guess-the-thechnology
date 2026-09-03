@@ -1,7 +1,7 @@
 import type { FieldConfig } from "../types/types"
-import Button from "./base/Button"
-import Input from "./base/Input"
-import Select from "./base/Select"
+import { Button } from "./base/Button"
+import { Input } from "./base/Input"
+import { Select } from "./base/Select"
 
 export const RenderField = ({ field }: { field: FieldConfig }) => {
   if (field.type === "array") {

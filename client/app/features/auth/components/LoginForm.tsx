@@ -1,9 +1,9 @@
 import { useState } from "react"
-import Form from "../../../components/base/Form"
 import type { FieldConfig } from "../../../types/types"
 import type z from "zod"
 import { loginSchema, type LoginSchema } from "../../../schemas/loginSchema"
 import { clearFieldError } from "../../../utils/clearFieldErrors"
+import { Form } from "../../../components/base/Form"
 
 type LoginFormProps = {
   onSubmit: (formData: LoginSchema) => void
