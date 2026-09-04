@@ -46,6 +46,9 @@ export const scores = sqliteTable("scores", {
   userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  quizId: integer("quiz_id")
+    .notNull()
+    .references(() => quizzes.id, { onDelete: "cascade" }),
   score: integer("score").notNull(),
   createdAt: text("created_at").default(sql`(CURRENT_TIMESTAMP)`),
 })

@@ -11,7 +11,6 @@ import type { LoginSchema } from "../schemas/loginSchema"
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
   const executeLogin = async (data: LoginSchema) => {
     setIsLoading(true)
     try {

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm"
 import { db } from "../db/db.js"
-import { quizzes, questions, answers } from "../db/schema.js"
+import { quizzes, questions, answers, scores } from "../db/schema.js"
 
 export const postCreateQuiz = async (req, res) => {
   try {
@@ -12,11 +12,9 @@ export const postCreateQuiz = async (req, res) => {
       !Array.isArray(questionsData) ||
       questionsData.length === 0
     ) {
-      return res
-        .status(400)
-        .json({
-          message: "Quiz title, description, and questions are required",
-        })
+      return res.status(400).json({
+        message: "Quiz title, description, and questions are required",
+      })
     }
 
     const newQuiz = db.transaction((tx) => {
@@ -193,6 +191,70 @@ export const deleteQuiz = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" })
   }
 }
+export const getScoresByQuizId = async (req, res) => {
+  try {
+    const quizId = parseInt(req.params.id, 10)
+    if (isNaN(quizId)) {
+      return res.status(400).json({ message: "Invalid quiz ID" })
+    }
+
+    const scores = db.select().from("scores").where(eq("quizId", quizId)).all()
+
+    return res.status(200).json(scores)
+  } catch (error) {
+    console.error("Get Scores By Quiz ID Error:", error)
+    return res.status(500).json({ message: "Internal server error" })
+  }
+}
+
+export const getScoresByUserId = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10)
+    if (isNaN(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" })
+    }
+
+    const scores = db.select().from("scores").where(eq("userId", userId)).all()
+
+    return res.status(200).json(scores)
+  } catch (error) {
+    console.error("Get Scores By User ID Error:", error)
+    return res.status(500).json({ message: "Internal server error" })
+  }
+}
+
+export const postCreateScore = async (req, res) => {
+  try {
+    const quizId = parseInt(req.params.id, 10)
+    const { score } = req.body
+
+    if (isNaN(quizId)) {
+      return res.status(400).json({ message: "Invalid quiz ID" })
+    }
+
+    if (typeof score !== "number") {
+      return res.status(400).json({ message: "Score must be a number" })
+    }
+
+    const newScore = db
+      .insert(scores)
+      .values({
+        quizId,
+        userId: req.userId,
+        score,
+      })
+      .returning()
+      .get()
+
+    return res.status(201).json({
+      message: "Score created successfully",
+      score: newScore,
+    })
+  } catch (error) {
+    console.error("Create Score Error:", error)
+    return res.status(500).json({ message: "Internal server error" })
+  }
+}
 
 export default {
   postCreateQuiz,
@@ -200,4 +262,7 @@ export default {
   getQuizById,
   putUpdateQuiz,
   deleteQuiz,
+  getScoresByQuizId,
+  getScoresByUserId,
+  postCreateScore,
 }

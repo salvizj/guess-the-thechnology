@@ -6,7 +6,7 @@ import { requireAdmin } from "../middleware/requireAdmin.js"
 
 const router = express.Router()
 
-//Auth Routes
+//auth routes
 router.post("/auth/register", authController.postRegister)
 router.post("/auth/login", authController.postLogin)
 router.post("/auth/logout", requireAuth, authController.postLogout)
@@ -18,11 +18,16 @@ router.get("/auth/verify", requireAuth, (req, res) => {
   })
 })
 
-//Public Quiz Routes
+//public quiz routes
 router.get("/quizzes", quizController.getQuizzes)
 router.get("/quiz/:id", quizController.getQuizById)
 
-//Admin-Protected Quiz Routes
+//authenticated quiz routes
+router.post("/quiz/:id/score", requireAuth, quizController.postCreateScore)
+router.get("/quiz/:id/scores", requireAuth, quizController.getScoresByQuizId)
+router.get("/user/:id/scores", requireAuth, quizController.getScoresByUserId)
+
+//admin-protected quiz routes
 router.post("/quiz", requireAuth, requireAdmin, quizController.postCreateQuiz)
 router.put(
   "/quizzes/:id",

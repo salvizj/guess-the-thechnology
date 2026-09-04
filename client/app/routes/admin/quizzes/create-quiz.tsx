@@ -19,10 +19,11 @@ export default function CreateQuiz() {
       const response = await createQuiz(formData)
 
       if (response?.quiz?.id) {
-        console.log("Quiz created successfully:", response)
         navigate("/admin/quizzes")
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Failes to create a quiz", error)
+    }
   }
   return (
     <>

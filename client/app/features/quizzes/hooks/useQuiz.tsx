@@ -7,6 +7,12 @@ import {
   fetchUpdateQuiz,
 } from "../api/quiz"
 import type { QuizSchema } from "../../../schemas/quizSchema"
+import {
+  fetchCreateScore,
+  fetchGetScoresByQuizId,
+  fetchGetScoresByUserId,
+} from "../api/score"
+import type { ScoreSchema } from "../../../schemas/scoreSchema"
 
 const useQuiz = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -92,6 +98,54 @@ const useQuiz = () => {
     }
   }, [])
 
+  const getScoresByQuizId = useCallback(async (id: string) => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const response = await fetchGetScoresByQuizId(id)
+      return response
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch score"
+      setError(message)
+      throw error
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const getScoresByUserId = useCallback(async (id: string) => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const response = await fetchGetScoresByUserId(id)
+      return response
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to fetch score"
+      setError(message)
+      throw error
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const createScore = useCallback(async (data: ScoreSchema, id: string) => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const response = await fetchCreateScore(data, id)
+      return response
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to create score"
+      setError(message)
+      throw error
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
   return {
     isLoading,
     error,
@@ -100,6 +154,9 @@ const useQuiz = () => {
     deleteQuiz,
     getQuiz,
     getQuizzes,
+    getScoresByQuizId,
+    getScoresByUserId,
+    createScore,
   }
 }
 

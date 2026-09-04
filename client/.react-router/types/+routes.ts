@@ -33,7 +33,7 @@ type Pages = {
       "id": string;
     };
   };
-  "/play/:id/results": {
+  "/results/:id": {
     params: {
       "id": string;
     };
@@ -63,11 +63,11 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:id" | "/play/:id" | "/play/:id/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
+    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:id" | "/play/:id" | "/results/:id" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
   };
   "routes/layouts/MainLayout.tsx": {
     id: "routes/layouts/MainLayout";
-    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:id" | "/play/:id" | "/play/:id/results" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
+    page: "/" | "/login" | "/register" | "/quizzes" | "/quizzes/:id" | "/play/:id" | "/results/:id" | "/profile" | "/admin" | "/admin/quizzes" | "/admin/quizzes/create" | "/admin/quizzes/:id/edit" | "/admin/users";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -95,7 +95,7 @@ type RouteFiles = {
   };
   "routes/quiz/results.tsx": {
     id: "routes/quiz/results";
-    page: "/play/:id/results";
+    page: "/results/:id";
   };
   "routes/layouts/ProtectedRoute.tsx": {
     id: "routes/layouts/ProtectedRoute";

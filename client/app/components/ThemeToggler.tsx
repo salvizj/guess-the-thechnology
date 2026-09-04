@@ -11,7 +11,6 @@ export const ThemeToggler = ({ themeToggle }: ThemeTogglerProps) => {
       onClick={themeToggle}
       variant="ghost"
       noPadding={true}
-      noFocus={true}
       className="text-content-muted"
     >
       <SunMoon />

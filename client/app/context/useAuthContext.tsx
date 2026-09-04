@@ -20,6 +20,7 @@ type AuthContextType = {
   isAdmin: boolean
   isLoading: boolean
   error: string | null
+  userId: number | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
+  const [userId, setUserId] = useState<number | null>(null)
   const [isVerifying, setIsVerifying] = useState<boolean>(true)
   const {
     error,
@@ -40,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleVerifyJWT = async () => {
     try {
       const res = await executeVerifyJWT()
+      setUserId(res.userId)
       setIsAuthenticated(Boolean(res && res.isValid))
       setIsAdmin(Boolean(res && (res.isAdmin === 1 || res.isAdmin === true)))
     } catch {
@@ -56,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleLogin = async (data: LoginSchema) => {
     try {
       const res = await executeLogin(data)
+      setUserId(res.userId)
       setIsAuthenticated(true)
       setIsAdmin(
         Boolean(res?.user?.isAdmin === 1 || res?.user?.isAdmin === true),
@@ -95,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         isLoading: authHookLoading || isVerifying,
         error,
+        userId,
         isAuthenticated,
         setIsAuthenticated,
         handleLogout,

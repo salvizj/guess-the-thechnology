@@ -47,7 +47,7 @@ export const Button = ({
   type = "button",
   onClick,
   noPadding = false,
-  noFocus = false,
+  noFocus = true,
   className = "",
   isActive = false,
   ...rest

@@ -39,7 +39,7 @@ export type FieldConfig = PrimitiveFieldConfig | ArrayFieldConfig
 export type QuestionDifficulty = "easy" | "medium" | "hard"
 
 export type User = {
-  id?: number
+  id: number
   username: string
   email: string
   passwordHash: string
@@ -47,7 +47,7 @@ export type User = {
 }
 
 export type Quiz = {
-  id?: number
+  id: number
   title: string
   description: string
   createdAt: string
@@ -55,7 +55,7 @@ export type Quiz = {
 }
 
 export type Question = {
-  id?: number
+  id: number
   quizId: number
   title: string
   imageUrl: string
@@ -65,15 +65,15 @@ export type Question = {
 }
 
 export type Answer = {
-  id?: number
+  id: number
   questionId: number
   optionText: string
   correct: boolean
 }
 
 export type Score = {
-  id?: number
+  id: number
   userId: number
   score: number
-  createdAt?: string
+  createdAt: string
 }
